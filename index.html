@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>中國歷代朝代小測驗</title>
+    <style>
+        body { font-family: "Microsoft JhengHei", sans-serif; background-color: #f4f4f9; display: flex; justify-content: center; padding: 20px; }
+        .quiz-container { background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); max-width: 500px; width: 100%; }
+        h2 { color: #333; text-align: center; border-bottom: 2px solid #eee; padding-bottom: 10px; }
+        .question { margin-bottom: 20px; display: none; }
+        .active { display: block; }
+        .options { display: flex; gap: 10px; margin-top: 15px; }
+        button { flex: 1; padding: 12px; border: none; border-radius: 6px; cursor: pointer; font-size: 16px; transition: 0.3s; }
+        .btn-option { background-color: #e7f3ff; color: #007bff; }
+        .btn-option:hover { background-color: #007bff; color: white; }
+        #result { text-align: center; display: none; }
+        .score { font-size: 24px; font-weight: bold; color: #28a745; }
+    </style>
+</head>
+<body>
+
+<div class="quiz-container">
+    <h2>朝代知識測驗</h2>
+    
+    <div id="quiz-content">
+        </div>
+
+    <div id="result">
+        <h3>測驗結束！</h3>
+        <p class="score" id="score-text"></p>
+        <button onclick="location.reload()" style="background: #6c757d; color: white;">再測一次</button>
+    </div>
+</div>
+
+<script>
+    const questions = [
+        { q: "1. 創立「貞觀之治」的唐太宗李世民，是哪一朝代？", a: "唐朝", b: "宋朝", correct: "a" },
+        { q: "2. 歷史上著名的「焚書坑儒」發生在那個朝代？", a: "漢朝", b: "秦朝", correct: "b" },
+        { q: "3. 岳飛是哪一個朝代的抗金名將？", a: "南宋", b: "明朝", correct: "a" },
+        { q: "4. 元朝是由哪一個民族所建立的朝代？", a: "契丹族", b: "蒙古族", correct: "b" },
+        { q: "5. 中國最後一個封建王朝是哪一個？", a: "清朝", b: "明朝", correct: "a" }
+    ];
+
+    let currentStep = 0;
+    let score = 0;
+
+    function renderQuestion() {
+        const container = document.getElementById('quiz-content');
+        if (currentStep < questions.length) {
+            const item = questions[currentStep];
+            container.innerHTML = `
+                <div class="question active">
+                    <p><strong>${item.q}</strong></p>
+                    <div class="options">
+                        <button class="btn-option" onclick="checkAnswer('a')">(A) ${item.a}</button>
+                        <button class="btn-option" onclick="checkAnswer('b')">(B) ${item.b}</button>
+                    </div>
+                </div>
+            `;
+        } else {
+            showResult();
+        }
+    }
+
+    function checkAnswer(ans) {
+        if (ans === questions[currentStep].correct) {
+            score++;
+        }
+        currentStep++;
+        renderQuestion();
+    }
+
+    function showResult() {
+        document.getElementById('quiz-content').style.display = 'none';
+        document.getElementById('result').style.display = 'block';
+        document.getElementById('score-text').innerText = `您的得分：${score} / ${questions.length}`;
+    }
+
+    // 初始化第一題
+    renderQuestion();
+</script>
+
+</body>
+</html>
